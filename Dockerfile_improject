@@ -1,0 +1,19 @@
+FROM ubuntu:22.04
+
+LABEL maintainer="Igor Misic <igy1000mb@gmail.com>"
+
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+		ca-certificates \
+        git \
+		make \
+		python3 \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+	
+# astyle v3.1
+COPY astyle /usr/bin/
+
+# cppcheck 2.9
+COPY cppcheck /opt/cppcheck
+ENV PATH="/opt/cppcheck:$PATH"
