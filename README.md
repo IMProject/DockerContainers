@@ -2,4 +2,7 @@
 
 
 ### How to build docker image
-docker build -t igormisic/improject:v1.0.0 -f Dockerfile_improject .
+docker build -t igormisic/improject:v1.0.1 -f Dockerfile_improject .
+
+### How to push docker image to docker hub
+docker push igormisic/improject:v1.0.1
