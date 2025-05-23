@@ -7,6 +7,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
   git \
   make \
   python3 \
+  wget \
+  tar \
+  xz-utils \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -17,3 +20,19 @@ COPY astyle /usr/bin/
 # cppcheck 2.13.4
 COPY cppcheck /opt/cppcheck
 ENV PATH="/opt/cppcheck:$PATH"
+
+# Set toolchain version and download URL
+ENV GCC_VERSION=14.2.rel1
+ENV TOOLCHAIN_URL=https://developer.arm.com/-/media/Files/downloads/gnu/${GCC_VERSION}/binrel/arm-gnu-toolchain-${GCC_VERSION}-x86_64-arm-none-eabi.tar.xz
+
+# Download and extract the toolchain
+RUN wget -q ${TOOLCHAIN_URL} -O toolchain.tar.xz && \
+    mkdir -p /opt/arm-toolchain && \
+    tar -xf toolchain.tar.xz -C /opt/arm-toolchain --strip-components=1 && \
+    rm toolchain.tar.xz
+
+# Update PATH environment variable
+ENV PATH="/opt/arm-toolchain/bin:$PATH"
+
+# Verify the installation
+RUN arm-none-eabi-gcc --version
