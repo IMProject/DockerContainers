@@ -3,9 +3,9 @@ FROM ubuntu:22.04
 LABEL maintainer="Igor Misic <igy1000mb@gmail.com>"
 
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+  build-essential \
   ca-certificates \
   git \
-  make \
   python3 \
   wget \
   tar \
